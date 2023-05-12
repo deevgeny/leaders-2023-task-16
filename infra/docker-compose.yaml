@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+
+  database:
+    image: postgres:15-alpine
+    container_name: database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+
+  backend:
+    #image: evgeny81d/foodgram_backend:latest
+    build: ../backend/
+    container_name: backend
+    expose:
+      - 8000
+    restart: always
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+    depends_on:
+      - database
+    env_file:
+      - ./.env
+
+  nginx:
+    image: nginx:1.21.3-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static:/app/static/
+      - media:/app/media/
+      # - ../frontend/build:/usr/share/nginx/html/
+      # - ../docs:/usr/share/nginx/html/api/docs/
+    restart: always
+    # depends_on:
+    #  - frontend
+
+  # frontend:
+    # image: evgeny81d/foodgram_frontend:latest
+    # volumes:
+      # - ../frontend/:/app/result_build/
+
+volumes:
+  postgres_data:
+  static:
+  media:
