@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from datetime import timedelta
 from os import environ
 from pathlib import Path
+from config.utils import get_secret
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ.get(
+SECRET_KEY = get_secret(
     'SECRET_KEY',
     'django-insecure-_7sc4b26m&ga(rimir-t8vn74uawhi^r+)@vab6idztn+g!$5k'
 )
@@ -87,9 +88,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': environ.get('POSTGRES_USER'),
-        'PASSWORD': environ.get('POSTGRES_PASSWORD'),
+        'NAME': get_secret('db_name', BASE_DIR / 'db.sqlite3'),
+        'USER': get_secret('db_user'),
+        'PASSWORD': get_secret('db_password'),
         'HOST': environ.get('DB_HOST'),
         'PORT': environ.get('DB_PORT')
     }
