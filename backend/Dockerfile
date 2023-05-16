@@ -1,11 +1,34 @@
-FROM python:3.10.6-slim
+
+# Base image
+FROM python:3.11-slim AS base
+
+ARG BACKEND_PORT=8000
+ENV BACKEND_PORT=$BACKEND_PORT
 
 WORKDIR /app
 
-COPY requirements.txt .
+# Install python packages
+COPY Pipfile .
+COPY Pipfile.lock .
+RUN pip install pipenv --no-cache-dir --disable-pip-version-check
+RUN pipenv install --system --deploy --ignore-pipfile
 
-RUN pip install -r requirements.txt --no-cache-dir --upgrade pip --root-user-action=ignore
+# Copy sources
+COPY api/ api/
+COPY config/ config/
+COPY users/ users/
+COPY manage.py .
 
-COPY . .
+# Copy entrypoint script
+COPY docker-entrypoint.sh .
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0:8000" ]
+
+# Run image
+FROM base AS run
+
+WORKDIR /app
+
+EXPOSE $BACKEND_PORT
+
+# Add entrypoint script
+ENTRYPOINT [ "bash", "-c", "./docker-entrypoint.sh", "docker-entrypoint.sh" ]
