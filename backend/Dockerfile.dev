@@ -4,10 +4,8 @@ FROM python:3.11-slim AS base
 WORKDIR /app
 
 # Install python packages
-COPY Pipfile Pipfile.lock ./
-#COPY Pipfile.lock .
-RUN pip install pipenv --no-cache-dir --disable-pip-version-check
-RUN pipenv install --system --deploy --ignore-pipfile
+COPY requirements.txt .
+RUN pip install -r requirements.txt --no-cache-dir --disable-pip-version-check
 
 # Copy sources
 COPY . .
