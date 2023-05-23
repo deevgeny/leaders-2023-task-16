@@ -10,6 +10,7 @@ drf-yasg = "*"
 djoser = "*"
 django-filter = "*"
 psycopg = {extras = ["binary"], version = "*"}
+gunicorn = "*"
 
 [dev-packages]
 flake8 = "*"

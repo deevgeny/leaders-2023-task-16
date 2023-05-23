@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': environ.get('POSTGRES_USER'),
-        'PASSWORD': environ.get('POSTGRES_PASSWORD'),
+        'NAME': get_secret('db_name', BASE_DIR / 'db.sqlite3'),
+        'USER': get_secret('db_user'),
+        'PASSWORD': get_secret('db_password'),
         'HOST': environ.get('DB_HOST'),
         'PORT': environ.get('DB_PORT')
     }

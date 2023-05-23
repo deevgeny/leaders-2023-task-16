@@ -1,0 +1,22 @@
+# Base image
+FROM python:3.11-slim AS base
+
+WORKDIR /app
+
+# Install python packages
+COPY Pipfile Pipfile.lock ./
+#COPY Pipfile.lock .
+RUN pip install pipenv --no-cache-dir --disable-pip-version-check
+RUN pipenv install --system --deploy --ignore-pipfile
+
+# Copy sources
+COPY . .
+
+# Run image
+FROM base AS run
+
+WORKDIR /app
+
+EXPOSE 8000
+
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0:8000" ]
