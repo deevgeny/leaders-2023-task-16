@@ -45,9 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
-    'django_filters',
     'drf_yasg',
     'users.apps.UsersConfig',
 ]
@@ -89,9 +86,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': environ.get('POSTGRES_USER'),
-        'PASSWORD': environ.get('POSTGRES_PASSWORD'),
+        'NAME': get_secret('db_name', BASE_DIR / 'db.sqlite3'),
+        'USER': get_secret('db_user'),
+        'PASSWORD': get_secret('db_password'),
         'HOST': environ.get('DB_HOST'),
         'PORT': environ.get('DB_PORT')
     }
@@ -153,15 +150,9 @@ AUTH_USER_MODEL = 'users.User'
 # Django REST framework settings
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    ]
 }
 
 
