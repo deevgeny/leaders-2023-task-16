@@ -14,8 +14,10 @@ RUN pip install pipenv --no-cache-dir --disable-pip-version-check
 RUN pipenv install --system --deploy --ignore-pipfile
 
 # Copy sources
-COPY api/ api/
+COPY core/ core/
 COPY config/ config/
+COPY docs/ docs/
+COPY auth/ auth/
 COPY users/ users/
 COPY manage.py .
 
