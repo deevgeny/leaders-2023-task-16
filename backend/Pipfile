@@ -7,10 +7,10 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 drf-yasg = "*"
-djoser = "*"
 django-filter = "*"
 psycopg = {extras = ["binary"], version = "*"}
 gunicorn = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 flake8 = "*"
