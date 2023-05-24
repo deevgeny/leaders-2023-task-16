@@ -12,7 +12,7 @@ class UserService:
     def register(self, user_dto: UserCreateSerializer) -> UserSerializer:
         data = user_dto.validated_data
 
-        if User.objects.filter(email=data['email']).exists():
+        if User.objects.filter(email=data["email"]).exists():
             raise AlreadyExistsException()
 
         user = User.objects.create_user(**data)
@@ -39,9 +39,7 @@ class UserService:
 
         return UserInfoSerializer(user_info)
 
-    def update_by_id(
-            self, id: int, user_dto: UserUpdateSerializer
-    ) -> UserSerializer:
+    def update_by_id(self, id: int, user_dto: UserUpdateSerializer) -> UserSerializer:
         try:
             user: User = User.objects.get(pk=id)
         except UserInfo.DoesNotExist:
@@ -49,14 +47,14 @@ class UserService:
 
         data = user_dto.validated_data
 
-        if User.objects.filter(email=data['email']).exists():
+        if User.objects.filter(email=data["email"]).exists():
             raise AlreadyExistsException()
 
-        user.email = data['email']
-        user.first_name = data['first_name']
-        user.last_name = data['last_name']
-        user.surname = data['surname']
-        user.phone = data['phone']
+        user.email = data["email"]
+        user.first_name = data["first_name"]
+        user.last_name = data["last_name"]
+        user.surname = data["surname"]
+        user.phone = data["phone"]
 
         if user_dto.password is not None:
             user.set_password(user_dto.password)
@@ -64,7 +62,9 @@ class UserService:
         user.save()
         return UserSerializer(user)
 
-    def update_info_by_id(self, id: int, info_dto: UserInfoSerializer) -> UserInfoSerializer:
+    def update_info_by_id(
+        self, id: int, info_dto: UserInfoSerializer
+    ) -> UserInfoSerializer:
         try:
             user: User = User.objects.get(pk=id)
         except UserInfo.DoesNotExist:
@@ -74,17 +74,14 @@ class UserService:
 
         try:
             user_info = UserInfo.objects.get(pk=user)
-            user_info.birthdate = data['birthdate']
-            user_info.university_name = data['university_name']
-            user_info.university_year = data['university_year']
-            user_info.job_experience = data['job_experience']
-            user_info.skills = data['skills']
-            user_info.departments = data['departments']
+            user_info.birthdate = data["birthdate"]
+            user_info.university_name = data["university_name"]
+            user_info.university_year = data["university_year"]
+            user_info.job_experience = data["job_experience"]
+            user_info.skills = data["skills"]
+            user_info.departments = data["departments"]
         except UserInfo.DoesNotExist:
-            user_info = UserInfo.objects.create(
-                user=user,
-                **data
-            )
+            user_info = UserInfo.objects.create(user=user, **data)
 
         user_info.save()
 

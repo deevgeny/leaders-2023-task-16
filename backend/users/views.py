@@ -15,7 +15,7 @@ from users.serializers import (
 from users.services import UserService
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def registration(request: Request):
     if not request.user.is_anonymous:
         raise PermissionDeniedException()
@@ -28,7 +28,7 @@ def registration(request: Request):
     return JsonResponse(user.data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_user_by_id(request: Request, user_id: int):
     user = UserService().get_by_id(user_id)
@@ -66,7 +66,7 @@ class UserMeInfoView(APIView):
         return JsonResponse(info.data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_info_by_id(request: Request, user_id: int):
     info = UserService().get_info_by_id(user_id)

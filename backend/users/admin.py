@@ -10,28 +10,24 @@ class UserInfoInline(admin.StackedInline):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
+        (None, {"fields": ["email", "password"]}),
+        ("Личные данные", {"fields": ["last_name", "first_name", "surname", "phone"]}),
         (
-            None,
-            {
-                'fields': ['email', 'password']
-            }
+            "Права доступа",
+            {"fields": ["role", "is_superuser", "groups", "user_permissions"]},
         ),
-        (
-            'Личные данные',
-            {
-                'fields': ['last_name', 'first_name', 'surname', 'phone']
-            }
-        ),
-        (
-            'Права доступа',
-            {
-                'fields': ['role', 'is_superuser', 'groups', 'user_permissions']
-            }
-        )
     )
 
     inlines = [UserInfoInline]
-    list_display = ('id', 'email', 'last_name', 'first_name', 'surname', 'role', 'is_superuser')
-    list_display_links = ('email',)
-    list_filter = ('role', 'is_superuser')
-    ordering = ('email',)
+    list_display = (
+        "id",
+        "email",
+        "last_name",
+        "first_name",
+        "surname",
+        "role",
+        "is_superuser",
+    )
+    list_display_links = ("email",)
+    list_filter = ("role", "is_superuser")
+    ordering = ("email",)
