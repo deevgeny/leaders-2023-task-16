@@ -30,7 +30,7 @@ CSRF_TRUSTED_ORIGINS=https://example.com
 CORS_ALLOWED_ORIGINS=http://localhost:8000
 ```
 
-Также можно создать файл `admin_credentails` для автоматического создания
+Также можно создать файл `admin_credentials` для автоматического создания
 аккаунта администратора. Пример файла:
 ```text
 DJANGO_SUPERUSER_EMAIL=admin@example.com
