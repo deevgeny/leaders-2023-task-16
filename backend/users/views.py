@@ -17,7 +17,7 @@ from users.services import UserService
 
 @api_view(['POST'])
 def registration(request: Request):
-    if request.user is None:
+    if not request.user.is_anonymous:
         raise PermissionDeniedException()
 
     data = JSONParser().parse(request)
