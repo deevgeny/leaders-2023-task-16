@@ -1,23 +1,18 @@
 from rest_framework import serializers
 
-
-class UserSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    email = serializers.EmailField()
-    role = serializers.CharField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    surname = serializers.CharField()
-    phone = serializers.CharField()
+from users.models import User, UserInfo
 
 
-class UserCreateSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    surname = serializers.CharField()
-    phone = serializers.CharField()
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "role", "first_name", "last_name", "surname", "phone"]
+
+
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "password", "first_name", "last_name", "surname", "phone"]
 
 
 class UserUpdateSerializer(serializers.Serializer):
@@ -29,10 +24,15 @@ class UserUpdateSerializer(serializers.Serializer):
     phone = serializers.CharField()
 
 
-class UserInfoSerializer(serializers.Serializer):
-    birthdate = serializers.DateField()
-    university_name = serializers.CharField()
-    university_year = serializers.IntegerField()
-    job_experience = serializers.CharField()
-    skills = serializers.CharField()
-    departments = serializers.CharField()
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = [
+            "birthdate",
+            "university_name",
+            "university_year",
+            "job_experience",
+            "skills",
+            "departments",
+            "citizenship",
+        ]
