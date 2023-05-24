@@ -1,10 +1,12 @@
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, NotFound, PermissionDenied
 
 
-class NotFoundException(APIException):
-    status_code = 404
-    default_detail = 'Entity does not exist'
-    default_code = 'not_found'
+class NotFoundException(NotFound):
+    ...
+
+
+class PermissionDeniedException(PermissionDenied):
+    ...
 
 
 class AlreadyExistsException(APIException):
