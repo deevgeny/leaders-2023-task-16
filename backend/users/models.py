@@ -2,6 +2,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
+from staff.models import Organization
+
 
 class UserManager(BaseUserManager):
     def create_user(
@@ -68,6 +70,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     surname = models.CharField(verbose_name="Отчество", max_length=50)
     phone = models.CharField(verbose_name="Номер телефона", max_length=20, blank=True)
 
+    organization = models.ForeignKey(
+        Organization, on_delete=models.RESTRICT, verbose_name="Организация", null=True
+    )
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+
     @property
     def is_staff(self):
         return self.is_superuser
@@ -94,6 +104,9 @@ class UserInfo(models.Model):
     skills = models.TextField(verbose_name="Навыки", blank=True)
     departments = models.TextField(
         verbose_name="Предпочитаемые направления стажировки", blank=True
+    )
+    citizenship = models.CharField(
+        verbose_name="Гражданство", blank=True, max_length=50
     )
 
     class Meta:

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "users.apps.UsersConfig",
     "candidates.apps.CandidatesConfig",
+    "staff.apps.StaffConfig",
 ]
 
 MIDDLEWARE = [
