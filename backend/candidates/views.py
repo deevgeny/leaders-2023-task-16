@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from auth.permissions import IsCandidate, IsCurator
 from candidates.services import CandidatesService
 from core.exceptions import InvalidFormatException
-from core.pagination import PageSizePagination
 
 
 class CandidatesMeRequestView(APIView):
