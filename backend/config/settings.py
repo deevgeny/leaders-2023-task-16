@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "candidates.apps.CandidatesConfig",
     "staff.apps.StaffConfig",
+    "interns.apps.InternsConfig",
 ]
 
 MIDDLEWARE = [
