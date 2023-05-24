@@ -28,7 +28,12 @@ class UserService:
 
     def get_info_by_id(self, id: int) -> UserInfoSerializer:
         try:
-            user_info = UserInfo.objects.get(user__pk=id)
+            user = User.objects.get(pk=id)
+        except User.DoesNotExist:
+            raise NotFoundException()
+
+        try:
+            user_info = UserInfo.objects.get(pk=user)
         except UserInfo.DoesNotExist:
             raise NotFoundException()
 
@@ -68,7 +73,7 @@ class UserService:
         data = info_dto.validated_data
 
         try:
-            user_info = UserInfo.objects.get(user__pk=id)
+            user_info = UserInfo.objects.get(pk=user)
             user_info.birthdate = data['birthdate']
             user_info.university_name = data['university_name']
             user_info.university_year = data['university_year']
@@ -77,9 +82,9 @@ class UserService:
             user_info.departments = data['departments']
         except UserInfo.DoesNotExist:
             user_info = UserInfo.objects.create(
+                user=user,
                 **data
             )
-            user_info.user = user
 
         user_info.save()
 

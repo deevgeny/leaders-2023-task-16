@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 
@@ -37,42 +37,12 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email, password, first_name, last_name, surname, **extra_fields
         )
-        user.is_admin = True
+        user.is_superuser = True
+        user.save()
         return user
 
 
-class UserInfo(models.Model):
-    birthdate = models.DateField(
-        verbose_name="Дата рождения",
-        blank=True,
-        null=True,
-        default=None
-    )
-    university_name = models.CharField(
-        verbose_name="Учебное заведение",
-        max_length=50,
-        blank=True
-    )
-    university_year = models.PositiveSmallIntegerField(
-        verbose_name="Курс",
-        blank=True,
-        null=True
-    )
-    job_experience = models.TextField(
-        verbose_name="Опыт работы",
-        blank=True
-    )
-    skills = models.TextField(
-        verbose_name="Навыки",
-        blank=True
-    )
-    departments = models.TextField(
-        verbose_name="Предпочитаемые направления стажировки",
-        blank=True
-    )
-
-
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
 
     class Role(models.TextChoices):
         CANDIDATE = 'CANDIDATE', 'Кандидат'
@@ -110,16 +80,51 @@ class User(AbstractBaseUser):
         max_length=20,
         blank=True
     )
-    is_admin = models.BooleanField(
-        verbose_name='Является администратором',
-        default=False
-    )
-    info = models.OneToOneField(
-        UserInfo,
-        on_delete=models.CASCADE,
-        null=True
-    )
 
     @property
-    def is_stuff(self):
-        return self.is_admin
+    def is_staff(self):
+        return self.is_superuser
+
+    @property
+    def is_active(self):
+        return True
+
+
+class UserInfo(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name='info'
+    )
+    birthdate = models.DateField(
+        verbose_name="Дата рождения",
+        blank=True,
+        null=True,
+        default=None
+    )
+    university_name = models.CharField(
+        verbose_name="Учебное заведение",
+        max_length=50,
+        blank=True
+    )
+    university_year = models.PositiveSmallIntegerField(
+        verbose_name="Курс",
+        blank=True,
+        null=True
+    )
+    job_experience = models.TextField(
+        verbose_name="Опыт работы",
+        blank=True
+    )
+    skills = models.TextField(
+        verbose_name="Навыки",
+        blank=True
+    )
+    departments = models.TextField(
+        verbose_name="Предпочитаемые направления стажировки",
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = 'Информация о пользователе'

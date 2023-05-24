@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
-from auth.permissions import IsAnonymous
+from core.exceptions import PermissionDeniedException
 from users.serializers import (
     UserCreateSerializer,
     UserInfoSerializer,
@@ -16,8 +16,10 @@ from users.services import UserService
 
 
 @api_view(['POST'])
-# @permission_classes([IsAnonymous])
 def registration(request: Request):
+    if request.user is None:
+        raise PermissionDeniedException()
+
     data = JSONParser().parse(request)
     user_dto = UserCreateSerializer(data=data)
     user_dto.is_valid(raise_exception=True)
