@@ -5,14 +5,14 @@ from django.db import models
 
 class UserManager(BaseUserManager):
     def create_user(
-            self,
-            email: str,
-            password: str,
-            first_name: str,
-            last_name: str,
-            surname: str,
-            **extra_fields
-    ) -> 'User':
+        self,
+        email: str,
+        password: str,
+        first_name: str,
+        last_name: str,
+        surname: str,
+        **extra_fields
+    ) -> "User":
         email = self.normalize_email(email)
         user = self.model(
             email=email,
@@ -26,13 +26,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(
-            self,
-            email: str,
-            password: str,
-            first_name: str,
-            last_name: str,
-            surname: str,
-            **extra_fields
+        self,
+        email: str,
+        password: str,
+        first_name: str,
+        last_name: str,
+        surname: str,
+        **extra_fields
     ):
         user = self.create_user(
             email, password, first_name, last_name, surname, **extra_fields
@@ -43,16 +43,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
     class Role(models.TextChoices):
-        CANDIDATE = 'CANDIDATE', 'Кандидат'
-        INTERN = 'INTERN', 'Стажер'
-        CURATOR = 'CURATOR', 'Куратор'
-        STAFF = 'STAFF', 'Кадровый специалист'
-        MENTOR = 'MENTOR', 'Наставник'
+        CANDIDATE = "CANDIDATE", "Кандидат"
+        INTERN = "INTERN", "Стажер"
+        CURATOR = "CURATOR", "Куратор"
+        STAFF = "STAFF", "Кадровый специалист"
+        MENTOR = "MENTOR", "Наставник"
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
+    REQUIRED_FIELDS = ["first_name", "last_name", "surname"]
 
     objects = UserManager()
 
@@ -61,25 +60,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name="Роль",
         max_length=16,
         choices=Role.choices,
-        default=Role.CANDIDATE
+        default=Role.CANDIDATE,
+        db_index=True,
     )
-    first_name = models.CharField(
-        verbose_name="Имя",
-        max_length=50
-    )
-    last_name = models.CharField(
-        verbose_name="Фамилия",
-        max_length=50
-    )
-    surname = models.CharField(
-        verbose_name="Отчество",
-        max_length=50
-    )
-    phone = models.CharField(
-        verbose_name="Номер телефона",
-        max_length=20,
-        blank=True
-    )
+    first_name = models.CharField(verbose_name="Имя", max_length=50)
+    last_name = models.CharField(verbose_name="Фамилия", max_length=50)
+    surname = models.CharField(verbose_name="Отчество", max_length=50)
+    phone = models.CharField(verbose_name="Номер телефона", max_length=20, blank=True)
 
     @property
     def is_staff(self):
@@ -92,39 +79,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserInfo(models.Model):
     user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-        related_name='info'
+        User, on_delete=models.CASCADE, primary_key=True, related_name="info"
     )
     birthdate = models.DateField(
-        verbose_name="Дата рождения",
-        blank=True,
-        null=True,
-        default=None
+        verbose_name="Дата рождения", blank=True, null=True, default=None
     )
     university_name = models.CharField(
-        verbose_name="Учебное заведение",
-        max_length=50,
-        blank=True
+        verbose_name="Учебное заведение", max_length=50, blank=True
     )
     university_year = models.PositiveSmallIntegerField(
-        verbose_name="Курс",
-        blank=True,
-        null=True
+        verbose_name="Курс", blank=True, null=True
     )
-    job_experience = models.TextField(
-        verbose_name="Опыт работы",
-        blank=True
-    )
-    skills = models.TextField(
-        verbose_name="Навыки",
-        blank=True
-    )
+    job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
+    skills = models.TextField(verbose_name="Навыки", blank=True)
     departments = models.TextField(
-        verbose_name="Предпочитаемые направления стажировки",
-        blank=True
+        verbose_name="Предпочитаемые направления стажировки", blank=True
     )
 
     class Meta:
-        verbose_name = 'Информация о пользователе'
+        verbose_name = "Информация о пользователе"

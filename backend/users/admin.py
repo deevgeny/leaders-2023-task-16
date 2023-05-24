@@ -10,7 +10,7 @@ class UserInfoInline(admin.StackedInline):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {"fields": ["email", "password"]}),
+        (None, {"fields": ["email"]}),
         ("Личные данные", {"fields": ["last_name", "first_name", "surname", "phone"]}),
         (
             "Права доступа",

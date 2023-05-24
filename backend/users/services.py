@@ -47,7 +47,10 @@ class UserService:
 
         data = user_dto.validated_data
 
-        if User.objects.filter(email=data["email"]).exists():
+        if (
+            data["email"] != user.email
+            and User.objects.filter(email=data["email"]).exists()
+        ):
             raise AlreadyExistsException()
 
         user.email = data["email"]
