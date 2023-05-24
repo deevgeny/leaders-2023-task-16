@@ -19,6 +19,7 @@ COPY config/ config/
 COPY docs/ docs/
 COPY auth/ auth/
 COPY users/ users/
+COPY candidates/ candidates/
 COPY manage.py .
 
 # Copy entrypoint script
