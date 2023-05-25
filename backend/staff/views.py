@@ -43,10 +43,9 @@ def get_organization_by_id(request, organization_id: int):
     if request.user.role == User.Role.CANDIDATE:
         raise PermissionDeniedException()
 
-    if (
-        request.user.role == User.Role.STAFF
-        and request.user.organization is not None
-        and request.user.organization.id != organization_id
+    if request.user.role == User.Role.STAFF and (
+        request.user.organization is None
+        or request.user.organization.id != organization_id
     ):
         raise PermissionDeniedException()
 
