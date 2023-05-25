@@ -59,8 +59,8 @@ class UserService:
         user.surname = data["surname"]
         user.phone = data["phone"]
 
-        if user_dto.password is not None:
-            user.set_password(user_dto.password)
+        if "password" in data and data["password"] is not None:
+            user.set_password(data["password"])
 
         user.save()
         return UserSerializer(user)
