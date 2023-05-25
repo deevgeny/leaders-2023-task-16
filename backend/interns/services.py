@@ -48,6 +48,18 @@ class InternsRequestService:
         queryset = InternsRequest.objects.filter(organization__pk=organization_id)
         return list(map(InternsRequestSerializer, queryset))
 
+    def get_requests(
+        self, page: int, size: int, status: InternsRequest.Status | None
+    ) -> list[InternsRequestSerializer]:
+        queryset = InternsRequest.objects.all()
+        if status is not None:
+            queryset = queryset.filter(status=status)
+
+        start = page * size
+        end = (page + 1) * size
+
+        return list(map(InternsRequestSerializer, queryset[start:end]))
+
     def delete(self, id: int):
         try:
             interns_request = InternsRequest.objects.get(pk=id)

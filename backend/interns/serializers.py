@@ -1,13 +1,14 @@
-from interns.models import InternsRequest
 from rest_framework import serializers
+
+from interns.models import InternsRequest
 
 
 class InternsRequestSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField()
     description = serializers.CharField()
-    organization_id = serializers.IntegerField(source="organization.id")
-    status = serializers.CharField()
+    organization_id = serializers.IntegerField(source="organization.id", read_only=True)
+    status = serializers.CharField(read_only=True)
 
     class Meta:
         model = InternsRequest
