@@ -1,7 +1,7 @@
 from candidates.models import CandidateRequest
 from candidates.serializers import (
+    BriefCandidateRequestSerializer,
     CandidateRequestSerializer,
-    VerboseCandidateRequestSerializer,
 )
 from core.exceptions import (
     AlreadyExistsException,
@@ -44,7 +44,7 @@ class CandidatesService:
 
     def search(
         self, page: int, size: int, recommended: bool | None
-    ) -> list[VerboseCandidateRequestSerializer]:
+    ) -> list[BriefCandidateRequestSerializer]:
         start, end = page * size, (page + 1) * size
 
         # TODO: Добавить сортировку по рекоммендованным кандидатам
@@ -52,7 +52,7 @@ class CandidatesService:
             status=CandidateRequest.Status.WAITING
         ).order_by("pk")
 
-        return list(map(VerboseCandidateRequestSerializer, queryset[start:end]))
+        return list(map(BriefCandidateRequestSerializer, queryset[start:end]))
 
     def set_request_status(self, user_id: int, status: CandidateRequest.Status):
         try:

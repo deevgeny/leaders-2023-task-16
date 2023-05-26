@@ -15,9 +15,9 @@ class CandidateRequest(models.Model):
         primary_key=True,
         related_name="candidate_request",
     )
-    score_percentage = models.PositiveSmallIntegerField(
-        verbose_name="Процент выполнения теста"
-    )
+    departments = models.TextField(verbose_name="Направления стажировки")
+    internship_source = models.TextField(verbose_name="Откуда узнали о стажировке")
+    schedule = models.PositiveIntegerField(verbose_name="График работы (кол-во часов)")
     status = models.CharField(
         verbose_name="Статус",
         max_length=16,
