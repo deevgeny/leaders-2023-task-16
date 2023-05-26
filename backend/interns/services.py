@@ -1,4 +1,4 @@
-from core.exceptions import NotFoundException
+from core.exceptions import IntegrityBreachException, NotFoundException
 from interns.models import InternsRequest
 from interns.serializers import InternsRequestSerializer
 from staff.models import Organization
@@ -27,6 +27,9 @@ class InternsRequestService:
             interns_request = InternsRequest.objects.get(pk=id)
         except InternsRequest.DoesNotExist:
             raise NotFoundException()
+
+        if interns_request.status != InternsRequest.Status.WAITING:
+            raise IntegrityBreachException()
 
         interns_request.name = dto.validated_data["name"]
         interns_request.description = dto.validated_data["description"]
@@ -67,3 +70,23 @@ class InternsRequestService:
             raise NotFoundException()
 
         interns_request.delete()
+
+    def set_status(self, id: int, status: InternsRequest.Status):
+        try:
+            interns_request = InternsRequest.objects.get(pk=id)
+        except InternsRequest.DoesNotExist:
+            raise NotFoundException()
+
+        if interns_request.status != InternsRequest.Status.WAITING:
+            raise IntegrityBreachException()
+
+        interns_request.status = status
+        interns_request.save()
+
+        return InternsRequestSerializer(interns_request)
+
+    def accept(self, id: int):
+        return self.set_status(id, InternsRequest.Status.ACCEPTED)
+
+    def decline(self, id: int):
+        return self.set_status(id, InternsRequest.Status.DECLINED)

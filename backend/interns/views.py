@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
-from auth.permissions import IsStaff
+from auth.permissions import IsCurator, IsStaff
 from core.exceptions import (
     InvalidFormatException,
     NotFoundException,
@@ -123,3 +123,17 @@ def get_interns_requests_list(request: Request):
     interns_requests = InternsRequestService().get_requests(page, size, status)
 
     return JsonResponse(list(map(lambda t: t.data, interns_requests)), safe=False)
+
+
+@api_view(["POST"])
+@permission_classes([IsCurator])
+def accept_interns_request(request, id: int):
+    interns_request = InternsRequestService().accept(id)
+    return JsonResponse(interns_request.data)
+
+
+@api_view(["POST"])
+@permission_classes([IsCurator])
+def decline_interns_request(request, id: int):
+    interns_request = InternsRequestService().decline(id)
+    return JsonResponse(interns_request.data)
