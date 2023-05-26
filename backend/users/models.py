@@ -117,5 +117,10 @@ class UserInfo(models.Model):
     )
     photo_url = models.URLField(verbose_name="Прямая ссылка на фотографию")
 
+    vk_id = models.CharField(verbose_name="VK id", max_length=60, blank=True)
+    telegram_id = models.CharField(
+        verbose_name="Telegram id", max_length=60, blank=True
+    )
+
     class Meta:
         verbose_name = "Информация о пользователе"
