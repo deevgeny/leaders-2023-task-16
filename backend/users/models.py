@@ -88,26 +88,34 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserInfo(models.Model):
+    class Gender(models.TextChoices):
+        MALE = "MALE", "Мужской"
+        FEMALE = "FEMALE", "Женский"
+
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, related_name="info"
     )
-    birthdate = models.DateField(
-        verbose_name="Дата рождения", blank=True, null=True, default=None
+    birthdate = models.DateField(verbose_name="Дата рождения")
+    gender = models.CharField(verbose_name="Пол", max_length=6, choices=Gender.choices)
+    city = models.CharField(verbose_name="Город проживания", max_length=60)
+    district = models.CharField(verbose_name="Район проживания", max_length=60)
+
+    education_institution = models.CharField(
+        verbose_name="Учебное заведение", max_length=60
     )
-    university_name = models.CharField(
-        verbose_name="Учебное заведение", max_length=50, blank=True
+    education_city = models.CharField(verbose_name="Город обучения", max_length=60)
+    faculty = models.CharField(verbose_name="Факультет", max_length=60)
+    speciality = models.CharField(verbose_name="Специальноть", max_length=60)
+    graduation_year = models.PositiveIntegerField(verbose_name="Год выпуска")
+    education_level = models.CharField(
+        verbose_name="Уровень образования", max_length=60
     )
-    university_year = models.PositiveSmallIntegerField(
-        verbose_name="Курс", blank=True, null=True
-    )
-    job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
-    skills = models.TextField(verbose_name="Навыки", blank=True)
-    departments = models.TextField(
-        verbose_name="Предпочитаемые направления стажировки", blank=True
-    )
+
+    job_experience = models.TextField(verbose_name="Опыт работы")
     citizenship = models.CharField(
         verbose_name="Гражданство", blank=True, max_length=50
     )
+    photo_url = models.URLField(verbose_name="Прямая ссылка на фотографию")
 
     class Meta:
         verbose_name = "Информация о пользователе"

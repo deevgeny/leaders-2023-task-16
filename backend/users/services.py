@@ -1,4 +1,5 @@
 from core.exceptions import AlreadyExistsException, NotFoundException
+from core.utils import set_attrs_from_dict
 from users.models import User, UserInfo
 from users.serializers import (
     UserCreateSerializer,
@@ -53,14 +54,12 @@ class UserService:
         ):
             raise AlreadyExistsException()
 
-        user.email = data["email"]
-        user.first_name = data["first_name"]
-        user.last_name = data["last_name"]
-        user.surname = data["surname"]
-        user.phone = data["phone"]
+        if "password" in data:
+            if data["password"] is not None:
+                user.set_password(data["password"])
+            data.pop("password")
 
-        if "password" in data and data["password"] is not None:
-            user.set_password(data["password"])
+        set_attrs_from_dict(user, data)
 
         user.save()
         return UserSerializer(user)
@@ -77,12 +76,7 @@ class UserService:
 
         try:
             user_info = UserInfo.objects.get(pk=user)
-            user_info.birthdate = data["birthdate"]
-            user_info.university_name = data["university_name"]
-            user_info.university_year = data["university_year"]
-            user_info.job_experience = data["job_experience"]
-            user_info.skills = data["skills"]
-            user_info.departments = data["departments"]
+            set_attrs_from_dict(user_info, data)
         except UserInfo.DoesNotExist:
             user_info = UserInfo.objects.create(user=user, **data)
 

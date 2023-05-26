@@ -27,12 +27,4 @@ class UserUpdateSerializer(serializers.Serializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
-        fields = [
-            "birthdate",
-            "university_name",
-            "university_year",
-            "job_experience",
-            "skills",
-            "departments",
-            "citizenship",
-        ]
+        exclude = ["user"]
