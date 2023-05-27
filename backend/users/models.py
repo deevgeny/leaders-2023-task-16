@@ -95,27 +95,35 @@ class UserInfo(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, related_name="info"
     )
-    birthdate = models.DateField(verbose_name="Дата рождения")
-    gender = models.CharField(verbose_name="Пол", max_length=6, choices=Gender.choices)
-    city = models.CharField(verbose_name="Город проживания", max_length=60)
-    district = models.CharField(verbose_name="Район проживания", max_length=60)
+    birthdate = models.DateField(verbose_name="Дата рождения", blank=True, null=True)
+    gender = models.CharField(
+        verbose_name="Пол", max_length=6, choices=Gender.choices, blank=True, null=True
+    )
+    city = models.CharField(verbose_name="Город проживания", max_length=60, blank=True)
+    district = models.CharField(
+        verbose_name="Район проживания", max_length=60, blank=True
+    )
 
     education_institution = models.CharField(
-        verbose_name="Учебное заведение", max_length=60
+        verbose_name="Учебное заведение", max_length=60, blank=True
     )
-    education_city = models.CharField(verbose_name="Город обучения", max_length=60)
-    faculty = models.CharField(verbose_name="Факультет", max_length=60)
-    speciality = models.CharField(verbose_name="Специальноть", max_length=60)
-    graduation_year = models.PositiveIntegerField(verbose_name="Год выпуска")
+    education_city = models.CharField(
+        verbose_name="Город обучения", max_length=60, blank=True
+    )
+    faculty = models.CharField(verbose_name="Факультет", max_length=60, blank=True)
+    speciality = models.CharField(
+        verbose_name="Специальноть", max_length=60, blank=True
+    )
+    graduation_year = models.PositiveIntegerField(verbose_name="Год выпуска", null=True)
     education_level = models.CharField(
-        verbose_name="Уровень образования", max_length=60
+        verbose_name="Уровень образования", max_length=60, blank=True
     )
 
-    job_experience = models.TextField(verbose_name="Опыт работы")
+    job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
     citizenship = models.CharField(
         verbose_name="Гражданство", blank=True, max_length=50
     )
-    photo_url = models.URLField(verbose_name="Прямая ссылка на фотографию")
+    photo_url = models.URLField(verbose_name="Прямая ссылка на фотографию", null=True)
 
     vk_id = models.CharField(verbose_name="VK id", max_length=60, blank=True)
     telegram_id = models.CharField(
