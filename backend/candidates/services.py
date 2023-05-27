@@ -12,7 +12,9 @@ from users.models import User
 
 
 class CandidatesService:
-    def create(self, user_id: int) -> CandidateRequestSerializer:
+    def create(
+        self, user_id: int, dto: CandidateRequestSerializer
+    ) -> CandidateRequestSerializer:
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
@@ -22,8 +24,7 @@ class CandidatesService:
             raise AlreadyExistsException()
 
         candidate_request = CandidateRequest.objects.create(
-            user=user,
-            score_percentage=100,  # TODO: Необходимо продумать как будут устроены тесты
+            user=user, **dto.validated_data
         )
 
         candidate_request.save()

@@ -28,3 +28,9 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         exclude = ["user"]
+
+
+class BriefUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ["gender", "birthdate", "citizenship", "education_level", "city"]

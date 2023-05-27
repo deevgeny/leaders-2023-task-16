@@ -1,9 +1,11 @@
 from django.http.response import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.parsers import JSONParser
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
 from auth.permissions import IsCandidate, IsCurator
+from candidates.serializers import CandidateRequestSerializer
 from candidates.services import CandidatesService
 from core.exceptions import InvalidFormatException
 
@@ -12,7 +14,12 @@ class CandidatesMeRequestView(APIView):
     permission_classes = [IsCandidate]
 
     def post(self, request):
-        candidate_request = CandidatesService().create(request.user.id)
+        data = JSONParser().parse(request)
+
+        dto = CandidateRequestSerializer(data=data)
+        dto.is_valid(raise_exception=True)
+
+        candidate_request = CandidatesService().create(request.user.id, dto)
         return JsonResponse(candidate_request.data)
 
     def get(self, request):
