@@ -23,7 +23,7 @@ COPY candidates/ candidates/
 COPY staff/ staff/
 COPY interns/ interns/
 COPY manage.py .
-COPY demo_users.py .
+# COPY demo_users.py .
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh .
