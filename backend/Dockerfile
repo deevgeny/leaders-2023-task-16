@@ -27,6 +27,7 @@ COPY demo_users.py .
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh .
+RUN ["chmod", "+x", "./docker-entrypoint.sh"]
 
 
 # Run image
