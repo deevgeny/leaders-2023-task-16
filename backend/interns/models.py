@@ -17,6 +17,7 @@ class InternsRequest(models.Model):
     )
     name = models.CharField(max_length=50)
     description = models.TextField()
+    test = models.TextField()
     status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.WAITING, db_index=True
     )

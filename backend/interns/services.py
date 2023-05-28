@@ -1,4 +1,5 @@
 from core.exceptions import IntegrityBreachException, NotFoundException
+from core.utils import set_attrs_from_dict
 from interns.models import InternsRequest
 from interns.serializers import InternsRequestSerializer
 from staff.models import Organization
@@ -31,8 +32,7 @@ class InternsRequestService:
         if interns_request.status != InternsRequest.Status.WAITING:
             raise IntegrityBreachException()
 
-        interns_request.name = dto.validated_data["name"]
-        interns_request.description = dto.validated_data["description"]
+        set_attrs_from_dict(interns_request, dto.validated_data)
 
         interns_request.save()
         return InternsRequestSerializer(interns_request)
