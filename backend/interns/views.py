@@ -115,10 +115,12 @@ def get_interns_requests_list(request: Request):
     else:
         raise InvalidFormatException()
 
-    if request.user.role not in [User.Role.CURATOR, User.Role.INTERN]:
-        raise PermissionDeniedException()
-
-    if request.user.role == User.Role.INTERN:
+    if request.user.role in [
+        User.Role.INTERN,
+        User.Role.CANDIDATE,
+        User.Role.STAFF,
+        User.Role.MENTOR,
+    ]:
         status = InternsRequest.Status.ACCEPTED
 
     interns_requests = InternsRequestService().get_requests(page, size, status)
