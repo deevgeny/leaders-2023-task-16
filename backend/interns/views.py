@@ -80,11 +80,12 @@ class MyOrganizationRequestById(APIView):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_interns_request_by_id(request, id: int):
-    if request.user.organization is None:
-        raise PermissionDeniedException()
-
     interns_request = InternsRequestService().get_by_id(id)
-    if interns_request.data["organization_id"] != request.user.organization.id:
+
+    if request.user.role == User.Role.STAFF and (
+        request.user.organization is None
+        or interns_request.data["organization_id"] != request.user.organization.id
+    ):
         raise PermissionDeniedException()
 
     return JsonResponse(interns_request.data)
