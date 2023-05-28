@@ -7,11 +7,18 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 drf-yasg = "*"
-djoser = "*"
 django-filter = "*"
 psycopg = {extras = ["binary"], version = "*"}
+gunicorn = "*"
+djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
+flake8 = "*"
+pep8-naming = "*"
+flake8-broken-line = "*"
+flake8-return = "*"
+flake8-isort = "*"
 
 [requires]
 python_version = "3.10"

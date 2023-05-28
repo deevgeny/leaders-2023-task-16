@@ -1,28 +1,33 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from users.models import User, UserInfo
+
+
+class UserInfoInline(admin.StackedInline):
+    model = UserInfo
 
 
 @admin.register(User)
-class CustomUserAdmin(UserAdmin):
-    """Register custom user model on admin site."""
+class UserAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        (_("Personal info"),
-         {"fields": ("first_name", "last_name", "email")}),
-        (_("Permissions"),
-         {"fields": ("is_active", "is_staff", "is_superuser", "groups",
-                     "user_permissions")}),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        (None, {"fields": ["email"]}),
+        ("Личные данные", {"fields": ["last_name", "first_name", "surname", "phone"]}),
+        (
+            "Права доступа",
+            {"fields": ["role", "is_superuser", "groups", "user_permissions"]},
+        ),
     )
-    add_fieldsets = (
-        (None, {"classes": ("wide",),
-                "fields": ("username", "last_name", "first_name", "password1",
-                           "password2", "email")}),
+
+    inlines = [UserInfoInline]
+    list_display = (
+        "id",
+        "email",
+        "last_name",
+        "first_name",
+        "surname",
+        "role",
+        "is_superuser",
     )
-    list_display = ("id", "username", "last_name", "first_name", "email",
-                    "is_active", "is_staff", "is_superuser")
-    list_display_links = ("username",)
-    list_filter = ("is_staff", "is_active", "is_superuser")
+    list_display_links = ("email",)
+    list_filter = ("role", "is_superuser")
+    ordering = ("email",)
