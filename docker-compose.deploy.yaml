@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   database:
     image: postgres:15-alpine
     volumes:
@@ -15,17 +14,15 @@ services:
       - db_user
       - db_password
     networks:
-      - internal
+      - my_network
 
   adminer:
     image: adminer
     restart: always
-    ports:
-      - 8080:8080
     depends_on:
       - database
     networks:
-      - internal
+      - my_network
 
   backend:
     # image: deevgeny/task-16-backend:latest
@@ -48,13 +45,26 @@ services:
       - db_password
       - secret_key
     networks:
-      - web
-      - internal
+      - my_network
     depends_on:
       - database
 
+  frontend:
+    build:
+      context: ./frontend2
+      args:
+        SERVER_PORT: 3000
+        API_PREFIX: /api/v1
+    networks:
+      - my_network
+    depends_on:
+      - backend
+
   nginx:
     image: nginx:1.21.3-alpine
+    networks:
+      - my_network
+      - web
     ports:
       - "80:80"
     volumes:
@@ -62,8 +72,6 @@ services:
       - static:/app/static/
       - media:/app/media/
     restart: always
-    networks:
-      - web
 
 volumes:
   postgres_data:
@@ -82,4 +90,6 @@ secrets:
 
 networks:
   web:
-  internal:
+    internal: false
+  my_network:
+    internal: true
