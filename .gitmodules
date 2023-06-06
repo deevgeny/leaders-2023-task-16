@@ -1,3 +1,7 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/TinyChief/moscow-jobs
+[submodule "frontend2"]
+	path = frontend2
+	url = https://github.com/TinyChief/moscow-jobs
+	branch = main
