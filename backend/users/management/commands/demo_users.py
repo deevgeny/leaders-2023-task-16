@@ -123,6 +123,7 @@ class Command(BaseCommand):
     """Custom command to create demo users."""
 
     def handle(self, *args, **options):
+        # Create UI demo users
         for user in demo_users:
             try:
                 User.objects.create_user(
@@ -138,6 +139,12 @@ class Command(BaseCommand):
             except IntegrityError:
                 self.stdout.write(self.style.ERROR("ERROR: Demo user already exists."))
 
+
+        # Skip candidates creation  
+        if User.objects.count() > 100:
+            return
+
+        # Create candidates
         for i in range(1, 101):
             try:
                 user = User.objects.create_user(
