@@ -95,7 +95,7 @@ class UserInfo(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True, related_name="info"
     )
-    birthdate = models.DateField(verbose_name="Дата рождения", blank=True, null=True)
+    birthdate = models.DateField(verbose_name="Дата рождения", blank=True, null=True, db_index=True)
     gender = models.CharField(
         verbose_name="Пол", max_length=6, choices=Gender.choices, blank=True, null=True
     )
@@ -112,14 +112,16 @@ class UserInfo(models.Model):
     )
     faculty = models.CharField(verbose_name="Факультет", max_length=60, blank=True)
     speciality = models.CharField(
-        verbose_name="Специальноть", max_length=60, blank=True
+        verbose_name="Специальность", max_length=60, blank=True
     )
     graduation_year = models.PositiveIntegerField(verbose_name="Год выпуска", null=True)
     education_level = models.CharField(
         verbose_name="Уровень образования", max_length=60, blank=True
     )
 
-    job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
+    has_job_experience = models.BooleanField(verbose_name="Имеется опыт работы", null=True)
+    has_volunteer_experience = models.BooleanField(verbose_name="Имеется опыт волонтерства", null=True)
+    # job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
     citizenship = models.CharField(
         verbose_name="Гражданство", blank=True, max_length=50
     )
