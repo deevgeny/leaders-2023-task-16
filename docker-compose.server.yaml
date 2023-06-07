@@ -25,17 +25,17 @@ services:
       - my_network
 
   backend:
-    # image: deevgeny/task-16-backend:latest
-    build:
-      context: ./backend
+    image: deevgeny/task-16-backend:deploy
     restart: always
     volumes:
       - media:/app/media/
+      - static:/app/static/
     environment:
       DB_ENGINE: $DB_ENGINE
       DB_HOST: $DB_HOST
       DB_PORT: $DB_PORT
       DEBUG: 0
+      ADMIN_CREDENTIALS_FILE: /run/secrets/admin_credentials
       ALLOWED_HOSTS: $ALLOWED_HOSTS
       CSRF_TRUSTED_ORIGINS: $CSRF_TRUSTED_ORIGINS
       CORS_ALLOWED_ORIGINS: $CORS_ALLOWED_ORIGINS
@@ -44,17 +44,14 @@ services:
       - db_user
       - db_password
       - secret_key
+      - admin_credentials
     networks:
       - my_network
     depends_on:
       - database
 
   frontend:
-    build:
-      context: ./frontend2
-      args:
-        SERVER_PORT: 3000
-        API_PREFIX: /api/v1
+    image: deevgeny/task-16-frontend:deploy
     networks:
       - my_network
     depends_on:
@@ -87,6 +84,9 @@ secrets:
     environment: POSTGRES_PASSWORD
   secret_key:
     environment: SECRET_KEY
+  admin_credentials:
+    file: ./admin_credentials
+
 
 networks:
   web:
