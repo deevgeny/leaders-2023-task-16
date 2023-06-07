@@ -121,7 +121,7 @@ class UserInfo(models.Model):
 
     has_job_experience = models.BooleanField(verbose_name="Имеется опыт работы", null=True)
     has_volunteer_experience = models.BooleanField(verbose_name="Имеется опыт волонтерства", null=True)
-    # job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
+    job_experience = models.TextField(verbose_name="Опыт работы", blank=True)
     citizenship = models.CharField(
         verbose_name="Гражданство", blank=True, max_length=50
     )
