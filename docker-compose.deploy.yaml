@@ -35,6 +35,7 @@ services:
       DB_ENGINE: $DB_ENGINE
       DB_HOST: $DB_HOST
       DB_PORT: $DB_PORT
+      ADMIN_CREDENTIALS_FILE: /run/secrets/admin_credentials
       DEBUG: 0
       ALLOWED_HOSTS: $ALLOWED_HOSTS
       CSRF_TRUSTED_ORIGINS: $CSRF_TRUSTED_ORIGINS
@@ -44,6 +45,7 @@ services:
       - db_user
       - db_password
       - secret_key
+      - admin_credentials
     networks:
       - my_network
     depends_on:
@@ -87,6 +89,9 @@ secrets:
     environment: POSTGRES_PASSWORD
   secret_key:
     environment: SECRET_KEY
+  admin_credentials:
+    file: ./admin_credentials
+
 
 networks:
   web:
