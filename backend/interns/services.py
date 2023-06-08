@@ -48,7 +48,9 @@ class InternsRequestService:
     def get_organization_requests(
         self, organization_id: int
     ) -> list[InternsRequestSerializer]:
-        queryset = InternsRequest.objects.filter(organization__pk=organization_id)
+        queryset = InternsRequest.objects.filter(
+            organization__pk=organization_id
+        )
         return list(map(InternsRequestSerializer, queryset))
 
     def get_requests(

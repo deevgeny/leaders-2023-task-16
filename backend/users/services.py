@@ -40,7 +40,8 @@ class UserService:
 
         return UserInfoSerializer(user_info)
 
-    def update_by_id(self, id: int, user_dto: UserUpdateSerializer) -> UserSerializer:
+    def update_by_id(self, id: int,
+                     user_dto: UserUpdateSerializer) -> UserSerializer:
         try:
             user: User = User.objects.get(pk=id)
         except UserInfo.DoesNotExist:

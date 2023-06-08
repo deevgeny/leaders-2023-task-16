@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from .models import InternIntro
+from .models import InternCase
 
 
-@admin.register(InternIntro)
-class InternIntroAdmin(admin.ModelAdmin):
-    list_display = ["user", "url", "progress"]
+@admin.register(InternCase)
+class InternCaseAdmin(admin.ModelAdmin):
+    list_display = ["user", "name", "description", "solution", "status"]
+    list_filter = ["status"]

@@ -1,18 +1,20 @@
 from django.http.response import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from auth.permissions import IsCurator, IsStaff
+from auth.permissions import IsCurator, IsIntern, IsStaff
 from core.exceptions import (
     InvalidFormatException,
     NotFoundException,
     PermissionDeniedException,
 )
-from interns.models import InternsRequest
-from interns.serializers import InternsRequestSerializer
+from interns.models import InternCase, InternsRequest
+from interns.serializers import InternCaseSerializer, InternsRequestSerializer
 from interns.services import InternsRequestService
 from users.models import User
 
@@ -53,7 +55,8 @@ class MyOrganizationRequestById(APIView):
             raise NotFoundException()
 
         interns_request = InternsRequestService().get_by_id(id)
-        if interns_request.data["organization_id"] != request.user.organization.id:
+        if (interns_request.data["organization_id"]
+                != request.user.organization.id):
             raise PermissionDeniedException()
 
         data = JSONParser().parse(request)
@@ -69,7 +72,8 @@ class MyOrganizationRequestById(APIView):
             raise NotFoundException()
 
         interns_request = InternsRequestService().get_by_id(id)
-        if interns_request.data["organization_id"] != request.user.organization.id:
+        if (interns_request.data["organization_id"]
+                != request.user.organization.id):
             raise PermissionDeniedException()
 
         InternsRequestService().delete(id)
@@ -84,7 +88,8 @@ def get_interns_request_by_id(request, id: int):
 
     if request.user.role == User.Role.STAFF and (
         request.user.organization is None
-        or interns_request.data["organization_id"] != request.user.organization.id
+        or interns_request.data["organization_id"]
+        != request.user.organization.id
     ):
         raise PermissionDeniedException()
 
@@ -125,7 +130,9 @@ def get_interns_requests_list(request: Request):
 
     interns_requests = InternsRequestService().get_requests(page, size, status)
 
-    return JsonResponse(list(map(lambda t: t.data, interns_requests)), safe=False)
+    return JsonResponse(
+        list(map(lambda t: t.data, interns_requests)), safe=False
+    )
 
 
 @api_view(["POST"])
@@ -140,3 +147,14 @@ def accept_interns_request(request, id: int):
 def decline_interns_request(request, id: int):
     interns_request = InternsRequestService().decline(id)
     return JsonResponse(interns_request.data)
+
+
+class InternCaseView(APIView):
+    permission_classes = [IsIntern]
+
+    def get(self, request):
+        obj = get_object_or_404(InternCase, user=request.user)
+        # Pass request to build full url path to solution file
+        serializer = InternCaseSerializer(instance=obj,
+                                          context={"request": request})
+        return Response(serializer.data)

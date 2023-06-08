@@ -11,11 +11,10 @@ class UserInfoInline(admin.StackedInline):
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ["email"]}),
-        ("Личные данные", {"fields": ["last_name", "first_name", "surname", "phone"]}),
-        (
-            "Права доступа",
-            {"fields": ["role", "is_superuser", "groups", "user_permissions"]},
-        ),
+        ("Личные данные",
+         {"fields": ["last_name", "first_name", "surname", "phone"]}),
+        ("Права доступа",
+         {"fields": ["role", "is_superuser", "groups", "user_permissions"]},),
     )
 
     inlines = [UserInfoInline]
