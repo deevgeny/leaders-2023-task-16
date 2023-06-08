@@ -68,8 +68,11 @@ class CandidatesService:
                 Q(user__info__has_job_experience=True)
                 | Q(user__info__has_volunteer_experience=True),
 
+                Q(user__info__education_level__iexact="Высшее образование - бакалавриат")
+                | Q(user__info__education_level__iexact="Высшее образование - специалитет, магистратура"),
+
                 user__info__birthdate__range=(start_date, end_date),
-                user__info__graduation_year__lte=datetime.now().year + 3
+                user__info__graduation_year__lte=datetime.now().year + 3,
             )
 
         queryset = queryset.order_by("pk")

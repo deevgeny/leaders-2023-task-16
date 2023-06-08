@@ -57,7 +57,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ./frontend2/
-        file: ./Dockerfile.frontend
+        file: ./frontend2/Dockerfile
         build-args: |
           SERVER_PORT=${{ secrets.FRONTEND_SERVER_PORT }}
           API_PREFIX=${{ secrets.FRONTEND_API_PREFIX }}
