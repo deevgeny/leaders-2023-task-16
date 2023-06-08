@@ -1,12 +1,33 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import serializers
 
-from users.models import User, UserInfo
+from users.models import User, UserInfo, InternshipState
+
+
+class InternshipStateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InternshipState
+        fields = ["stage", "request_status", "intro_status", "test_status",
+                  "case_status", "choice_status", "work_status"]
 
 
 class UserSerializer(serializers.ModelSerializer):
+
+    state = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "email", "role", "first_name", "last_name", "surname", "phone"]
+        fields = ["id", "email", "role", "first_name", "last_name", "surname",
+                  "phone", "state"]
+    
+    def get_state(self, obj):
+        """Return user state data from one-to-one related model."""
+        try:
+            if obj.role in [User.Role.CANDIDATE, User.Role.INTERN]:
+                return InternshipStateSerializer(obj.state).data
+        except ObjectDoesNotExist:
+            return
 
 
 class UserCreateSerializer(serializers.ModelSerializer):

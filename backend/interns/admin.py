@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import InternIntro
+
+
+@admin.register(InternIntro)
+class InternIntroAdmin(admin.ModelAdmin):
+    list_display = ["user", "url", "progress"]
