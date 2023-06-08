@@ -56,24 +56,26 @@ class CandidatesService:
             status=CandidateRequest.Status.WAITING
         )
 
-        if recommended:
+        if recommended is not None:
             start_date = datetime.now() - timedelta(days=35 * 365)
             end_date = datetime.now() - timedelta(days=18 * 365)
 
-            queryset = queryset.filter(
+            query = (
                 Q(user__info__citizenship__iexact="Российская федерация")
                 | Q(user__info__citizenship__iexact="Россия")
-                | Q(user__info__citizenship__iexact="РФ"),
-
+                | Q(user__info__citizenship__iexact="РФ")
+            ) & (
                 Q(user__info__has_job_experience=True)
-                | Q(user__info__has_volunteer_experience=True),
-
+                | Q(user__info__has_volunteer_experience=True)
+            ) & (
                 Q(user__info__education_level__iexact="Высшее образование - бакалавриат")
-                | Q(user__info__education_level__iexact="Высшее образование - специалитет, магистратура"),
-
+                | Q(user__info__education_level__iexact="Высшее образование - специалитет, магистратура")
+            ) & Q(
                 user__info__birthdate__range=(start_date, end_date),
-                user__info__graduation_year__lte=datetime.now().year + 3,
+                user__info__graduation_year__lte=datetime.now().year + 3
             )
+
+            queryset = queryset.filter(query if recommended else ~query)
 
         queryset = queryset.order_by("pk")
 
