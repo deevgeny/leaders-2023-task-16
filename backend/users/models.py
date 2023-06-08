@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(verbose_name="Имя", max_length=50)
     last_name = models.CharField(verbose_name="Фамилия", max_length=50)
     surname = models.CharField(verbose_name="Отчество", max_length=50)
-    phone = models.CharField(verbose_name="Номер телефона", max_length=20, 
+    phone = models.CharField(verbose_name="Номер телефона", max_length=20,
                              blank=True)
 
     organization = models.ForeignKey(
@@ -189,7 +189,7 @@ class UserInfo(models.Model):
 
 class UserState(models.Model):
     """Abstract user state model."""
-    
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -206,12 +206,12 @@ class InternshipState(UserState):
 
     class Stage(models.TextChoices):
         REQUEST = "REQUEST", "Заявка"
-        INTRO = "INTRO", "Карьерная школа"
+        SCHOOL = "SCHOOL", "Карьерная школа"
         TEST = "TEST", "Тестирование"
         CASE = "CASE", "Кейс чемпионат"
         CHOICE = "CHOICE", "Выбор места стажировки"
         WORK = "WORK", "Работа на месте стажировки"
-    
+
     stage = models.CharField(
         verbose_name="Этап отбора",
         max_length=16,
@@ -223,7 +223,7 @@ class InternshipState(UserState):
         max_length=16,
         default=""
     )
-    intro_status = models.CharField(
+    school_status = models.CharField(
         verbose_name="Карьерная школа",
         max_length=16,
         default="",

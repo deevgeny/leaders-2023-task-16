@@ -28,7 +28,8 @@ class MyOrganizationView(APIView):
         dto = OrganizationSerializer(data=data)
         dto.is_valid(raise_exception=True)
 
-        organization = OrganizationService().update_by_user_id(request.user.id, dto)
+        organization = (OrganizationService()
+                        .update_by_user_id(request.user.id, dto))
 
         return JsonResponse(organization.data)
 

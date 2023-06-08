@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
-from candidates.models import CandidateRequest
+from candidates.models import (
+    CandidateCareerSchool,
+    CandidateRequest,
+    CandidateTest,
+)
 from users.serializers import BriefUserInfoSerializer, UserSerializer
 
 
@@ -25,3 +29,15 @@ class BriefCandidateRequestSerializer(serializers.Serializer):
             "departments",
             "status",
         ]
+
+
+class CandidateCareerSchoolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CandidateCareerSchool
+        fields = ["url", "progress"]
+
+
+class CandidateTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CandidateTest
+        fields = ["url", "status"]

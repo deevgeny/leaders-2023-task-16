@@ -68,8 +68,11 @@ class CandidatesService:
                 Q(user__info__has_job_experience=True)
                 | Q(user__info__has_volunteer_experience=True),
 
-                Q(user__info__education_level__iexact="Высшее образование - бакалавриат")
-                | Q(user__info__education_level__iexact="Высшее образование - специалитет, магистратура"),
+                Q(user__info__education_level__iexact=("Высшее образование - "
+                                                       "бакалавриат"))
+                | Q(user__info__education_level__iexact=("Высшее образование "
+                                                         "- специалитет, "
+                                                         "магистратура")),
 
                 user__info__birthdate__range=(start_date, end_date),
                 user__info__graduation_year__lte=datetime.now().year + 3,
@@ -79,7 +82,8 @@ class CandidatesService:
 
         return list(map(BriefCandidateRequestSerializer, queryset[start:end]))
 
-    def set_request_status(self, user_id: int, status: CandidateRequest.Status):
+    def set_request_status(self, user_id: int,
+                           status: CandidateRequest.Status):
         try:
             user = User.objects.get(pk=user_id)
         except User.DoesNotExist:
@@ -99,7 +103,9 @@ class CandidatesService:
         return CandidateRequestSerializer(candidate_request)
 
     def accept(self, user_id: int):
-        return self.set_request_status(user_id, CandidateRequest.Status.ACCEPTED)
+        return self.set_request_status(user_id,
+                                       CandidateRequest.Status.ACCEPTED)
 
     def decline(self, user_id: int):
-        return self.set_request_status(user_id, CandidateRequest.Status.DECLINED)
+        return self.set_request_status(user_id,
+                                       CandidateRequest.Status.DECLINED)

@@ -1,8 +1,8 @@
 from datetime import date
-from random import choice, choices, randint
+from random import choice
 
 from django.contrib.auth import get_user_model
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 
 from candidates.models import CandidateRequest
@@ -138,12 +138,15 @@ class Command(BaseCommand):
                     last_name=user["last_name"],
                     phone=user["phone"],
                 )
-                self.stdout.write(self.style.SUCCESS("SUCCESS: Demo user created."))
+                self.stdout.write(
+                    self.style.SUCCESS("SUCCESS: Demo user created.")
+                )
             except IntegrityError:
-                self.stdout.write(self.style.ERROR("ERROR: Demo user already exists."))
+                self.stdout.write(
+                    self.style.ERROR("ERROR: Demo user already exists.")
+                )
 
-
-        # Skip candidates creation  
+        # Skip candidates creation
         if User.objects.count() > 100:
             return
 
@@ -159,7 +162,9 @@ class Command(BaseCommand):
                     last_name=user_data["last_name"],
                     phone=user_data["phone"].format(5550000 + i),
                 )
-                self.stdout.write(self.style.SUCCESS("SUCCESS: Db data user created."))
+                self.stdout.write(
+                    self.style.SUCCESS("SUCCESS: Db data user created.")
+                )
                 # Create user info
                 UserInfo.objects.create(
                     user=user,
@@ -167,24 +172,32 @@ class Command(BaseCommand):
                     gender=choice(user_data["gender"]),
                     city=user_data["city"],
                     district=choice(user_data["district"]),
-                    education_institution=choice(user_data["education_institution"]),
+                    education_institution=choice(
+                        user_data["education_institution"]
+                    ),
                     education_city=user_data["education_city"],
                     faculty=choice(user_data["faculty"]),
                     speciality=choice(user_data["speciality"]),
                     graduation_year=choice(user_data["graduation_year"]),
                     education_level=choice(user_data["education_level"]),
                     has_job_experience=choice(user_data["has_job_experience"]),
-                    has_volunteer_experience=choice(user_data["has_volunteer_experience"]),
+                    has_volunteer_experience=choice(
+                        user_data["has_volunteer_experience"]
+                    ),
                     job_experience=choice(user_data["job_experience"]),
                     citizenship=choice(user_data["citizenship"]),
                     photo_url=user_data["photo_url"].format(i),
                 )
-                self.stdout.write(self.style.SUCCESS("SUCCESS: Db data info created."))
+                self.stdout.write(
+                    self.style.SUCCESS("SUCCESS: Db data info created.")
+                )
                 # Create candidate request
                 CandidateRequest.objects.create(
                     user=user,
                     departments=choice(user_requests["departments"]),
-                    internship_source=choice(user_requests["internship_source"]),
+                    internship_source=choice(
+                        user_requests["internship_source"]
+                    ),
                     schedule=choice(user_requests["chedule"]),
                     status=choice(user_requests["status"]),
                 )

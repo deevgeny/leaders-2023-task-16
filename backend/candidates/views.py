@@ -1,11 +1,18 @@
 from django.http.response import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .models import CandidateCareerSchool, CandidateTest
 from auth.permissions import IsCandidate, IsCurator
-from candidates.serializers import CandidateRequestSerializer
+from candidates.serializers import (
+    CandidateCareerSchoolSerializer,
+    CandidateRequestSerializer,
+    CandidateTestSerializer,
+)
 from candidates.services import CandidatesService
 from core.exceptions import InvalidFormatException
 
@@ -70,3 +77,21 @@ def accept_candidate_request(request, user_id: int):
 def decline_candidate_request(request, user_id: int):
     CandidatesService().decline(user_id)
     return JsonResponse({})
+
+
+class CandidateCareerSchoolView(APIView):
+    permission_classes = [IsCandidate]
+
+    def get(self, request):
+        obj = get_object_or_404(CandidateCareerSchool, user=request.user)
+        serializer = CandidateCareerSchoolSerializer(obj)
+        return Response(serializer.data)
+
+
+class CandidateTestView(APIView):
+    permission_classes = [IsCandidate]
+
+    def get(self, request):
+        obj = get_object_or_404(CandidateTest, user=request.user)
+        serializer = CandidateTestSerializer(obj)
+        return Response(serializer.data)
