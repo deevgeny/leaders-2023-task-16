@@ -100,7 +100,9 @@ user_data = {
         "Специальность 4",
     ],
     "graduation_year": [2024, 2025, 2023, 2026, 2027],
-    "education_level": ["Специалист", "Магистр", "Бакалавр"],
+    "education_level": ["среднее профессиональное образование",
+                        "высшее образование - бакалавриат",
+                        "высшее образование - специалитет, магистратура"],
     "has_job_experience": [True, False],
     "has_volunteer_experience": [True, False],
     "job_experience": [
