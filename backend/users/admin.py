@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from users.models import InternshipState, User, UserInfo
 
@@ -8,13 +9,19 @@ class UserInfoInline(admin.StackedInline):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class CustomUserAdmin(UserAdmin):
     fieldsets = (
-        (None, {"fields": ["email"]}),
+        (None, {'fields': ('email', 'password')}),
         ("Личные данные",
-         {"fields": ["last_name", "first_name", "surname", "phone"]}),
+         {'fields': ('first_name', 'surname', 'last_name', 'phone')}),
         ("Права доступа",
          {"fields": ["role", "is_superuser", "groups", "user_permissions"]},),
+    )
+
+    add_fieldsets = (
+        (None, {"classes": ("wide",),
+                "fields": ("email", "first_name", "surname", "last_name",
+                           "password1", "password2")}),
     )
 
     inlines = [UserInfoInline]

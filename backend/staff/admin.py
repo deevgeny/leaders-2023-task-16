@@ -10,4 +10,4 @@ class UserInline(admin.StackedInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    inlines = [UserInline]
+    list_display = ["name", "description", "email", "phone", "address"]
