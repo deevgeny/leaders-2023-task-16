@@ -9,7 +9,8 @@ export $(egrep -v '^#' $ADMIN_CREDENTIALS_FILE | xargs)
 python manage.py createsuperuser --noinput || echo
 fi
 
-python manage.py demo_users
+# Skip database fill
+# python manage.py demo_users
 
 if [ $DEBUG ]; then
 python manage.py runserver 0.0.0.0:$BACKEND_PORT $@

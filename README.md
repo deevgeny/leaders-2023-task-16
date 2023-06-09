@@ -16,7 +16,10 @@
     * Postgresql 15
 
 * Фронтэнд
-    * React
+    * React 18.2.0
+    * Material UI 5
+    * Axios 1.4.0
+    * Vite 4.3.2
 
 * Инфраструктура
     * Docker 24.0

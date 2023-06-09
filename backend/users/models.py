@@ -250,4 +250,5 @@ class InternshipState(UserState):
     )
 
     class Meta:
-        verbose_name = "Отбор на стажировку"
+        verbose_name = "Статус стажировки"
+        verbose_name_plural = "Статусы стажировок"
