@@ -168,7 +168,6 @@ SIMPLE_JWT = {
 
 
 # CSRF trusted origins (when using https with reverse-proxy)
-
 CSRF_TRUSTED_ORIGINS = environ.get("CSRF_TRUSTED_ORIGINS", "").split()
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -191,3 +190,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = environ.get(bool(int("EMAIL_USE_SSL")), False)

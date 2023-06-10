@@ -48,6 +48,7 @@ services:
       CELERY_BROKER_URL: $CELERY_BROKER_URL
       EMAIL_HOST_USER: $EMAIL_HOST_USER
       EMAIL_HOST_PASSWORD: $EMAIL_HOST_PASSWORD
+      EMAIL_USE_SSL: $EMAIL_USE_SSL
     secrets:
       - db_name
       - db_user
@@ -78,6 +79,7 @@ services:
       CELERY_BROKER_URL: $CELERY_BROKER_URL
       EMAIL_HOST_USER: $EMAIL_HOST_USER
       EMAIL_HOST_PASSWORD: $EMAIL_HOST_PASSWORD
+      EMAIL_USE_SSL: $EMAIL_USE_SSL
       CELERY: 1
     secrets:
       - db_name
