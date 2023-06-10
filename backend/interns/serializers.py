@@ -23,3 +23,10 @@ class InternCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = InternCase
         fields = ["name", "description", "solution", "status"]
+
+
+class RequestsStatisticsSerializer(serializers.Serializer):
+    total_requests_count = serializers.IntegerField()
+    waiting_requests_count = serializers.IntegerField()
+    accepted_requests_count = serializers.IntegerField()
+    declined_requests_count = serializers.IntegerField()

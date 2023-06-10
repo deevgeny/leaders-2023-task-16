@@ -8,6 +8,7 @@ from interns.views import (
     decline_interns_request,
     get_interns_request_by_id,
     get_interns_requests_list,
+    get_interns_requests_statistics,
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     path("requests/", get_interns_requests_list),
     path("requests/<int:id>/accept/", accept_interns_request),
     path("requests/<int:id>/decline/", decline_interns_request),
+    path("requests/statistics/", get_interns_requests_statistics),
     path("interns/me/case/", InternCaseView.as_view()),
 ]

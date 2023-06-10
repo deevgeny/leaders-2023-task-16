@@ -14,7 +14,11 @@ from core.exceptions import (
     PermissionDeniedException,
 )
 from interns.models import InternCase, InternsRequest
-from interns.serializers import InternCaseSerializer, InternsRequestSerializer
+from interns.serializers import (
+    InternCaseSerializer,
+    InternsRequestSerializer,
+    RequestsStatisticsSerializer,
+)
 from interns.services import InternsRequestService
 from users.models import User
 
@@ -158,3 +162,10 @@ class InternCaseView(APIView):
         serializer = InternCaseSerializer(instance=obj,
                                           context={"request": request})
         return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsCurator])
+def get_interns_requests_statistics(request):
+    stats = InternsRequestService().get_statistics()
+    return JsonResponse(stats.initial_data)
