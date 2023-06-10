@@ -8,13 +8,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from auth.permissions import IsCurator, IsIntern, IsStaff
+from candidates.models import CandidateRequest
 from core.exceptions import (
     InvalidFormatException,
     NotFoundException,
     PermissionDeniedException,
 )
 from interns.models import InternCase, InternsRequest
-from interns.serializers import InternCaseSerializer, InternsRequestSerializer
+from interns.serializers import (
+    InternCaseSerializer,
+    InternsRequestSerializer,
+    InternsStatisticsSerializer,
+)
 from interns.services import InternsRequestService
 from users.models import User
 
@@ -157,4 +162,23 @@ class InternCaseView(APIView):
         # Pass request to build full url path to solution file
         serializer = InternCaseSerializer(instance=obj,
                                           context={"request": request})
+        return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsCurator])
+def get_interns_requests_statistics(request):
+    stats = InternsRequestService().get_statistics()
+    return JsonResponse(stats.initial_data)
+
+
+class InternsStatisticsView(APIView):
+    permission_classes = [IsCurator]
+
+    def get(self, request):
+        queryset = (CandidateRequest.objects
+                    .filter(user__role=User.Role.INTERN)
+                    .select_related("user", "user__info", "user__state")
+                    .all())
+        serializer = InternsStatisticsSerializer(queryset)
         return Response(serializer.data)

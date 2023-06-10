@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
@@ -6,15 +7,18 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import CandidateCareerSchool, CandidateTest
+from .models import CandidateCareerSchool, CandidateRequest, CandidateTest
 from auth.permissions import IsCandidate, IsCurator
 from candidates.serializers import (
     CandidateCareerSchoolSerializer,
     CandidateRequestSerializer,
+    CandidateStatisticsSerializer,
     CandidateTestSerializer,
 )
 from candidates.services import CandidatesService
 from core.exceptions import InvalidFormatException
+
+User = get_user_model()
 
 
 class CandidatesMeRequestView(APIView):
@@ -94,4 +98,16 @@ class CandidateTestView(APIView):
     def get(self, request):
         obj = get_object_or_404(CandidateTest, user=request.user)
         serializer = CandidateTestSerializer(obj)
+        return Response(serializer.data)
+
+
+class CandidatesStatisticsView(APIView):
+    permission_classes = [IsCurator]
+
+    def get(self, request):
+        queryset = (CandidateRequest.objects
+                    .filter(user__role=User.Role.CANDIDATE)
+                    .select_related("user", "user__info", "user__state")
+                    .all())
+        serializer = CandidateStatisticsSerializer(queryset)
         return Response(serializer.data)

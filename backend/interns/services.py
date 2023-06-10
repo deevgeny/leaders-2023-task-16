@@ -1,7 +1,10 @@
 from core.exceptions import IntegrityBreachException, NotFoundException
 from core.utils import set_attrs_from_dict
 from interns.models import InternsRequest
-from interns.serializers import InternsRequestSerializer
+from interns.serializers import (
+    InternsRequestSerializer,
+    RequestsStatisticsSerializer,
+)
 from staff.models import Organization
 
 
@@ -64,6 +67,26 @@ class InternsRequestService:
         end = (page + 1) * size
 
         return list(map(InternsRequestSerializer, queryset[start:end]))
+
+    def get_statistics(self) -> RequestsStatisticsSerializer:
+        waiting_count = InternsRequest.objects.filter(
+            status=InternsRequest.Status.WAITING
+        ).count()
+        accepted_count = InternsRequest.objects.filter(
+            status=InternsRequest.Status.ACCEPTED
+        ).count()
+        declined_count = InternsRequest.objects.filter(
+            status=InternsRequest.Status.DECLINED
+        ).count()
+
+        total_count = waiting_count + accepted_count + declined_count
+
+        return RequestsStatisticsSerializer(data={
+            "total_requests_count": total_count,
+            "waiting_requests_count": waiting_count,
+            "accepted_requests_count": accepted_count,
+            "declined_requests_count": declined_count
+        })
 
     def delete(self, id: int):
         try:
