@@ -1,8 +1,12 @@
 #!/bin/bash
 
 if [ $CELERY ]; then
-    celery -A config worker -l INFO
-    exit 0
+    if [ $DEBUG ]; then
+        celery -A config worker -l DEBUG
+        exit 0
+    else
+        celery -A config worker -l INFO
+        exit 0
 fi
 
 python manage.py collectstatic --noinput
