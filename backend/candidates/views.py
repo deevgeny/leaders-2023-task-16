@@ -101,7 +101,7 @@ class CandidateTestView(APIView):
         return Response(serializer.data)
 
 
-class CandidatesStatistics(APIView):
+class CandidatesStatisticsView(APIView):
     permission_classes = [IsCurator]
 
     def get(self, request):

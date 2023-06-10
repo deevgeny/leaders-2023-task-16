@@ -2,6 +2,7 @@ from django.urls import path
 
 from interns.views import (
     InternCaseView,
+    InternsStatisticsView,
     MyOrganizationRequestById,
     MyOrganizationRequests,
     accept_interns_request,
@@ -21,4 +22,5 @@ urlpatterns = [
     path("requests/<int:id>/decline/", decline_interns_request),
     path("requests/statistics/", get_interns_requests_statistics),
     path("interns/me/case/", InternCaseView.as_view()),
+    path("statistics/interns/", InternsStatisticsView.as_view())
 ]

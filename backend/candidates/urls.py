@@ -3,7 +3,7 @@ from django.urls import path
 from candidates.views import (
     CandidateCareerSchoolView,
     CandidatesMeRequestView,
-    CandidatesStatistics,
+    CandidatesStatisticsView,
     CandidateTestView,
     accept_candidate_request,
     decline_candidate_request,
@@ -19,5 +19,5 @@ urlpatterns = [
     path("candidates/<int:user_id>/request/", get_candidate_request_by_id),
     path("candidates/<int:user_id>/accept/", accept_candidate_request),
     path("candidates/<int:user_id>/decline/", decline_candidate_request),
-    path("statistics/candidates/", CandidatesStatistics.as_view())
+    path("statistics/candidates/", CandidatesStatisticsView.as_view())
 ]

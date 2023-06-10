@@ -49,16 +49,12 @@ class CandidateTestSerializer(serializers.ModelSerializer):
         fields = ["url", "status"]
 
 
-class RequestsStatisticsSerializer(serializers.ModelSerializer):
+class RequestsStatisticsSerializer(serializers.Serializer):
 
     total = serializers.SerializerMethodField()
     accepted = serializers.SerializerMethodField()
     declined = serializers.SerializerMethodField()
     recommended = serializers.SerializerMethodField()
-
-    class Meta:
-        model = CandidateRequest
-        fields = ["total", "accepted", "declined", "recommended"]
 
     def get_total(self, queryset):
         return len(queryset)
@@ -103,8 +99,8 @@ class CandidateStatisticsSerializer(serializers.Serializer):
         return RequestsStatisticsSerializer(queryset).data
     
     def get_age(self, queryset):
-        return {"under17": 1, "between18And25": 5,
-                "between24And35": 8, "over35": 5, "average": 28}
+        return {"under18": 1, "between18And25": 5,
+                "between25And35": 8, "over35": 5, "average": 28}
 
     def get_gender(self, queryset):
         return {"male": 8, "female": 4}
