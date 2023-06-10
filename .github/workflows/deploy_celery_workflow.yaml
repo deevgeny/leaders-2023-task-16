@@ -61,7 +61,7 @@ jobs:
           SERVER_PORT=${{ secrets.FRONTEND_SERVER_PORT }}
           API_PREFIX=${{ secrets.FRONTEND_API_PREFIX }}
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-frontend:celery
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-frontend:deploy
   
   deploy:
     name: Deploy
@@ -79,6 +79,7 @@ jobs:
           script: |
             docker compose stop
             docker compose rm -f backend
+            docker compose rm -f celery
             docker compose rm -f frontend
             docker image prune -fa
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} > .env

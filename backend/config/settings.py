@@ -185,7 +185,7 @@ CELERY_BROKER_URL = environ.get("CELERY_BROKER_URL", "redis://127.0.0.1:6379/")
 
 
 # Email settings
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.mail.ru"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
