@@ -87,14 +87,14 @@ class CandidatesService:
 
             queryset = queryset.filter(
                 ~Q(user__info__citizenship__iexact="Российская федерация")
-                | ~Q(user__info__citizenship__iexact="Россия")
-                | ~Q(user__info__citizenship__iexact="РФ")
-                | Q(user__info__has_job_experience=False)
-                | Q(user__info__has_volunteer_experience=False)
-                | Q(user__info__education_level__iexact=(
+                & ~Q(user__info__citizenship__iexact="Россия")
+                & ~Q(user__info__citizenship__iexact="РФ")
+                & Q(user__info__has_job_experience=False)
+                & Q(user__info__has_volunteer_experience=False)
+                & Q(user__info__education_level__iexact=(
                     ("среднее профессиональное образование")))
-                | ~Q(user__info__birthdate__range=(start_date, end_date))
-                | Q(user__info__graduation_year__gt=datetime.now().year + 3),
+                & ~Q(user__info__birthdate__range=(start_date, end_date))
+                & Q(user__info__graduation_year__gt=datetime.now().year + 3),
             )
 
         queryset = queryset.order_by("pk")
