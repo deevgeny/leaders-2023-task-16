@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from candidates.models import (
@@ -6,6 +7,8 @@ from candidates.models import (
     CandidateTest,
 )
 from users.serializers import BriefUserInfoSerializer, UserSerializer
+
+User = get_user_model()
 
 
 class CandidateRequestSerializer(serializers.ModelSerializer):
@@ -41,3 +44,9 @@ class CandidateTestSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateTest
         fields = ["url", "status"]
+
+
+class CandidateStatisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id"]

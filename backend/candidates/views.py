@@ -101,23 +101,27 @@ class CandidatesStatistics(APIView):
     permission_classes = [IsCurator]
 
     def get(self, request):
-        return Response({"requests": {
-                         "total": 1000,
-                         "recommended": 900,
-                         "request": 20,
-                         "school": 45,
-                         "test": 34,
-                         "gender": {"male": 100, "female": 80},
-                         "departments": [{"name": "HR", "value": 231},
-                                         {"name": "IT", "value": 255},
-                                         {"name": "ГЭ", "value": 100},
-                                         {"name": "КГС", "value": 143},
-                                         {"name": "МГ", "value": 300},
-                                         {"name": "ПП", "value": 234},
-                                         {"name": "СГ", "value": 532}],
-                         "age": {"under18": 10, "between18And25": 5,
-                                 "between25And35": 20, "over35": 5,
-                                 "average": 28},
-                         "educatoion": {"secondary": 200,
-                                        "bachelor": 120,
-                                        "degree": 200}}})
+        return Response(
+            {"requests": {"total": 1492, "recommended": 1200},
+             "age": {"under18": 10, "between18And25": 5,
+                     "between25And35": 20, "over35": 5, "average": 28},
+             "gender": {"male": 800, "female": 123},
+             "directions": [{"name": "HR", "value": 231},
+                            {"name": "IT", "value": 255},
+                            {"name": "ГЭ", "value": 100},
+                            {"name": "КГС", "value": 143},
+                            {"name": "МГ", "value": 300},
+                            {"name": "ПП", "value": 234},
+                            {"name": "СГ", "value": 532}],
+             "education": [{"name": "среднее профессиональное образование",
+                            "value": 231},
+                           {"name": "высшее образование - бакалавриат",
+                            "value": 255},
+                           {"name": ("высшее образование - "
+                                     "специалитет, магистратура"),
+                            "value": "100"}],
+             "city": {"moscow": 80, "other": 20},
+             "schedule": {"fullTime": 68, "partTime": 32},
+             "jobExperience": {"volunteerExperience": 55,
+                               "workExperience": 94}}
+        )
