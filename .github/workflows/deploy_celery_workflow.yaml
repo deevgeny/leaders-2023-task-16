@@ -1,10 +1,9 @@
-name: Deploy
+name: Deploy with celery and redis
 
 on:
   push:
     branches:
-      - deploy
-      - main
+      - feature/email-notifications
 
 jobs:
   build_backend:
@@ -31,7 +30,7 @@ jobs:
         context: ./backend/
         file: ./backend/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-backend:deploy
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-backend:celery
   
   build_frontend:
     environment: DEPLOY 
@@ -62,7 +61,7 @@ jobs:
           SERVER_PORT=${{ secrets.FRONTEND_SERVER_PORT }}
           API_PREFIX=${{ secrets.FRONTEND_API_PREFIX }}
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-frontend:deploy
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/task-16-frontend:celery
   
   deploy:
     name: Deploy

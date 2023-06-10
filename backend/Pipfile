@@ -12,6 +12,8 @@ psycopg = {extras = ["binary"], version = "*"}
 gunicorn = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 flake8 = "*"
