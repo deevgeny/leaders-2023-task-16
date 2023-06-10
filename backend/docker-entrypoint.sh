@@ -7,6 +7,7 @@ if [ $CELERY ]; then
     else
         celery -A config worker -l INFO
         exit 0
+    fi
 fi
 
 python manage.py collectstatic --noinput
