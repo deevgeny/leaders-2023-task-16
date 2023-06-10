@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
@@ -6,15 +7,18 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import CandidateCareerSchool, CandidateTest
+from .models import CandidateCareerSchool, CandidateRequest, CandidateTest
 from auth.permissions import IsCandidate, IsCurator
 from candidates.serializers import (
     CandidateCareerSchoolSerializer,
     CandidateRequestSerializer,
+    CandidateStatisticsSerializer,
     CandidateTestSerializer,
 )
 from candidates.services import CandidatesService
 from core.exceptions import InvalidFormatException
+
+User = get_user_model()
 
 
 class CandidatesMeRequestView(APIView):
@@ -101,27 +105,9 @@ class CandidatesStatistics(APIView):
     permission_classes = [IsCurator]
 
     def get(self, request):
-        return Response(
-            {"requests": {"total": 1492, "recommended": 1200},
-             "age": {"under18": 10, "between18And25": 5,
-                     "between25And35": 20, "over35": 5, "average": 28},
-             "gender": {"male": 800, "female": 123},
-             "directions": [{"name": "HR", "value": 231},
-                            {"name": "IT", "value": 255},
-                            {"name": "ГЭ", "value": 100},
-                            {"name": "КГС", "value": 143},
-                            {"name": "МГ", "value": 300},
-                            {"name": "ПП", "value": 234},
-                            {"name": "СГ", "value": 532}],
-             "education": [{"name": "среднее профессиональное образование",
-                            "value": 231},
-                           {"name": "высшее образование - бакалавриат",
-                            "value": 255},
-                           {"name": ("высшее образование - "
-                                     "специалитет, магистратура"),
-                            "value": "100"}],
-             "city": {"moscow": 80, "other": 20},
-             "schedule": {"fullTime": 68, "partTime": 32},
-             "jobExperience": {"volunteerExperience": 55,
-                               "workExperience": 94}}
-        )
+        queryset = (CandidateRequest.objects
+                    .filter(user__role=User.Role.CANDIDATE)
+                    .select_related("user", "user__info", "user__state")
+                    .all())
+        serializer = CandidateStatisticsSerializer(queryset)
+        return Response(serializer.data)
