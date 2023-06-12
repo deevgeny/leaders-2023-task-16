@@ -185,9 +185,11 @@ CELERY_BROKER_URL = environ.get("CELERY_BROKER_URL", "redis://127.0.0.1:6379/")
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.mail.ru"
-EMAIL_PORT = int(environ.get("EMAIL_PORT", 587))
 EMAIL_HOST_USER = environ.get("EMAIL_HOST_USER")
+EMAIL_HOST = environ.get("EMAIL_HOST")
+EMAIL_PORT = environ.get("EMAIL_PORT")
 EMAIL_HOST_PASSWORD = environ.get("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_TLS = True
-EMAIL_USE_SSL = bool(int(environ.get("EMAIL_USE_SSL", False)))
+EMAIL_USE_TLS = bool(int(environ.get("EMAIL_USE_TLS", 0)))
+EMAIL_USE_SSL = bool(int(environ.get("EMAIL_USE_SSL", 0)))
+EMAIL_SSL_KEYFILE = BASE_DIR / environ.get("EMAIL_SSL_KEYFILE")
+EMAIL_SSL_CERTFILE = BASE_DIR / environ.get("EMAIL_SSL_CERTFILE")
